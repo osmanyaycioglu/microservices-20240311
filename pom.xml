@@ -9,6 +9,9 @@
 
   <name>microservices-20240311</name>
   <url>http://maven.apache.org</url>
+  <modules>
+    <module>node-configuration</module>
+  </modules>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
