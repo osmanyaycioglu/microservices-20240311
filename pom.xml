@@ -11,6 +11,8 @@
   <url>http://maven.apache.org</url>
   <modules>
     <module>node-configuration</module>
+    <module>node-discovery</module>
+    <module>ms-order</module>
   </modules>
 
   <properties>
