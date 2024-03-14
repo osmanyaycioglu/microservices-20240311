@@ -1,4 +1,4 @@
-package org.training.restaurant;
+package org.training.ms.order.integration.restaurant.models;
 
 import lombok.Builder;
 import lombok.Data;
