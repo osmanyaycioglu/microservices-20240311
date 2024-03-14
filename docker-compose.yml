@@ -1,43 +1,24 @@
 version: '3.8'
 services:
-  cofigserver:
-    image: node-configuration
-    hostname: cofigserver
-    container_name: cofigserver
-  discovery:
-    image: node-discovery
-    hostname: discovery
-    container_name: discovery
-    ports:
-      - "5555:80"
   order1:
     image: ms-order
     hostname: order1
     container_name: order1
     ports:
       - "10000:80"
-    depends_on:
-      - cofigserver
   order2:
     image: ms-order
     hostname: order2
     container_name: order2
     ports:
       - "10001:80"
-    depends_on:
-      - cofigserver
   order3:
     image: ms-order
     hostname: order3
     container_name: order3
     ports:
       - "10002:80"
-    depends_on:
-      - cofigserver
 networks:
-  default:
-    driver: bridge
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.233.10.0/24
+  network1:
+    name: msnetwork
+    external: true

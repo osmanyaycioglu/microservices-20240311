@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  cofigserver:
+    image: node-configuration
+    hostname: cofigserver
+    container_name: cofigserver
+    ports:
+      - "8888:80"
+  discovery:
+    image: node-discovery
+    hostname: discovery
+    container_name: discovery
+    ports:
+      - "5555:80"
+networks:
+  network1:
+    name: msnetwork
+    external: true
