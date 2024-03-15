@@ -1,4 +1,4 @@
-package org.training.restaurant;
+package org.training.restaurant.api.models;
 
 import lombok.Builder;
 import lombok.Data;

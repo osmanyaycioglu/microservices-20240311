@@ -2,6 +2,7 @@ package org.training.ms.order.controllers.models;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.training.restaurant.api.models.MealOrder;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -18,10 +19,10 @@ public class PlaceOrderRequest {
     @NotBlank
     private String name;
     @NotBlank
-    private String surname;
+    private String          surname;
     @Size(min = 1,max = 10)
     private List<MealOrder> orders;
-    private String note;
+    private String          note;
     @FutureOrPresent
     private LocalDateTime orderDate;
 

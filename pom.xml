@@ -13,6 +13,8 @@
     <module>node-configuration</module>
     <module>node-discovery</module>
     <module>ms-order</module>
+    <module>ms-restaurant</module>
+    <module>ms-restaurant-api</module>
   </modules>
 
   <properties>

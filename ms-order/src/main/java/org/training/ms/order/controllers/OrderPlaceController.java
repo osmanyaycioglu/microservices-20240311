@@ -1,6 +1,7 @@
 package org.training.ms.order.controllers;
 
 
+import com.netflix.discovery.EurekaClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -9,8 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import org.training.ms.order.controllers.models.PlaceOrderRequest;
 import org.training.ms.order.controllers.models.PlaceOrderResponse;
-import org.training.ms.order.integration.restaurant.models.PackageRequest;
-import org.training.ms.order.integration.restaurant.models.StartResponse;
+import org.training.restaurant.api.models.PackageRequest;
+import org.training.restaurant.api.models.StartResponse;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class OrderPlaceController {
     private final RestTemplate restTemplate;
+    private final EurekaClient eurekaClient;
 
     @PutMapping
     public PlaceOrderResponse placeOrder(PlaceOrderRequest orderRequestParam) {

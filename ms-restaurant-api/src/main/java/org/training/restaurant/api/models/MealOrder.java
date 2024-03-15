@@ -1,4 +1,4 @@
-package org.training.ms.order.controllers.models;
+package org.training.restaurant.api.models;
 
 import lombok.Data;
 
