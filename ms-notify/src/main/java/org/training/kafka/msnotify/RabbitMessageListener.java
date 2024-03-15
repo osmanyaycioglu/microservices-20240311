@@ -39,7 +39,7 @@ public class RabbitMessageListener {
             exchange = @Exchange(name = "int-topic-message-exch",durable = "true", autoDelete = "false",type = ExchangeTypes.TOPIC),
             key = "msg.sms.europe.east.tr.#"
     ))
-    public void listenTRSMS(String str) {
+    public void listenTRSMS(NotifyMessage str) {
         System.out.println("Received TR SMS : " + str);
     }
 
@@ -48,7 +48,7 @@ public class RabbitMessageListener {
             exchange = @Exchange(name = "int-topic-message-exch",durable = "true", autoDelete = "false",type = ExchangeTypes.TOPIC),
             key = "msg.#"
     ))
-    public void listenAll(String str) {
+    public void listenAll(NotifyMessage str) {
         System.out.println("Received ALL MSG : " + str);
     }
 
@@ -57,7 +57,7 @@ public class RabbitMessageListener {
             exchange = @Exchange(name = "int-topic-message-exch",durable = "true", autoDelete = "false",type = ExchangeTypes.TOPIC),
             key = "msg.sms.#"
     ))
-    public void listenAllSMSM(String str) {
+    public void listenAllSMSM(NotifyMessage str) {
         System.out.println("Received ALL SMS : " + str);
     }
 
@@ -66,7 +66,7 @@ public class RabbitMessageListener {
             exchange = @Exchange(name = "int-topic-message-exch",durable = "true", autoDelete = "false",type = ExchangeTypes.TOPIC),
             key = "msg.email.#"
     ))
-    public void listenAllEmails(String str) {
+    public void listenAllEmails(NotifyMessage str) {
         System.out.println("Received ALL EMAILs : " + str);
     }
 
@@ -75,7 +75,7 @@ public class RabbitMessageListener {
             exchange = @Exchange(name = "int-topic-message-exch",durable = "true", autoDelete = "false",type = ExchangeTypes.TOPIC),
             key = "msg.*.europe.#"
     ))
-    public void listenAllEuropeMSGs(String str) {
+    public void listenAllEuropeMSGs(NotifyMessage str) {
         System.out.println("Received ALL Europe MSGs : " + str);
     }
 

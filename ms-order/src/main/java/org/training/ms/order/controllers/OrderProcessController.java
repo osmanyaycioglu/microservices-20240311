@@ -8,10 +8,12 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.training.ms.order.controllers.models.PlaceOrderRequest;
 import org.training.ms.order.controllers.models.PlaceOrderResponse;
+import org.training.ms.order.integration.notify.models.NotifyMessage;
 import org.training.ms.order.integration.restaurant.IRestaurantIntegration;
 import org.training.restaurant.api.models.PackageRequest;
 import org.training.restaurant.api.models.StartResponse;
@@ -24,10 +26,11 @@ import java.util.concurrent.atomic.AtomicLong;
 @Valid
 @RequiredArgsConstructor
 public class OrderProcessController {
-    private final RestTemplate restTemplate;
-    private final EurekaClient eurekaClient;
+    private final RestTemplate           restTemplate;
+    private final EurekaClient           eurekaClient;
     private final IRestaurantIntegration restaurantIntegration;
-    private       AtomicLong   atomicLong = new AtomicLong();
+    private final RabbitTemplate         rabbitTemplate;
+    private       AtomicLong             atomicLong = new AtomicLong();
 
     @PostMapping("/place")
     public PlaceOrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest orderRequestParam) {
@@ -81,6 +84,14 @@ public class OrderProcessController {
         packageRequestLoc.setMeals(orderRequestParam.getOrders());
         packageRequestLoc.setOrderId(packageRequestLoc.getOrderId());
         StartResponse startResponseLoc = restaurantIntegration.start(packageRequestLoc);
+        rabbitTemplate.convertAndSend("int-topic-message-exch",
+                                      "msg.sms.europe.east.tr.delivery",
+                                      NotifyMessage.builder()
+                                                   .withDest(orderRequestParam.getPhoneNumber())
+                                                   .withMsg("Siparişiniz alındı : "
+                                                            + startResponseLoc.getPackageFinish())
+                                                   .withValidPeriod(30_000L)
+                                                   .build());
         return PlaceOrderResponse.builder()
                                  .withDeliveryTimeParam(startResponseLoc.getPackageFinish())
                                  .withDescParam("Paket hazırlanıyor " + startResponseLoc.getDesc())
