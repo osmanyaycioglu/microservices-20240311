@@ -1,0 +1,37 @@
+server:
+  error:
+    include-binding-errors: always
+    include-exception: true
+    include-message: always
+    include-stacktrace: never
+  port: ${JKL:80}
+spring:
+  application:
+    name: order
+  config:
+    import: ${CONFSERVER:configserver:http://127.0.0.1:8888}
+resilience4j:
+    retry:
+        instances:
+          restaurant-retry:
+            max-attempts: 3
+            wait-duration: 10ms
+            exponential-backoff-multiplier: 2
+            exponential-max-wait-duration: 100ms
+            retry-exception-predicate: org.training.ms.order.integration.restaurant.MyRestaurantRetryExceptionHandler
+            result-predicate: org.training.ms.order.integration.restaurant.MyRestaurantResultHandler
+    circuitbreaker:
+        instances:
+          restaurant-cb:
+            sliding-window-type: count_based
+            sliding-window-size: 20
+            minimum-number-of-calls: 10
+            failure-rate-threshold: 30
+            wait-duration-in-open-state: 2s
+            automatic-transition-from-open-to-half-open-enabled: false
+            max-wait-duration-in-half-open-state: 2s
+            permitted-number-of-calls-in-half-open-state: 10
+            slow-call-duration-threshold: 200ms
+            slow-call-rate-threshold: 50
+
+

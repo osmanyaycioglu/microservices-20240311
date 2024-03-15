@@ -15,6 +15,7 @@ import org.training.ms.order.controllers.models.PlaceOrderRequest;
 import org.training.ms.order.controllers.models.PlaceOrderResponse;
 import org.training.ms.order.integration.notify.models.NotifyMessage;
 import org.training.ms.order.integration.restaurant.IRestaurantIntegration;
+import org.training.ms.order.integration.restaurant.RestaurantServiceIntegration;
 import org.training.restaurant.api.models.PackageRequest;
 import org.training.restaurant.api.models.StartResponse;
 
@@ -26,11 +27,11 @@ import java.util.concurrent.atomic.AtomicLong;
 @Valid
 @RequiredArgsConstructor
 public class OrderProcessController {
-    private final RestTemplate           restTemplate;
-    private final EurekaClient           eurekaClient;
-    private final IRestaurantIntegration restaurantIntegration;
-    private final RabbitTemplate         rabbitTemplate;
-    private       AtomicLong             atomicLong = new AtomicLong();
+    private final RestTemplate                 restTemplate;
+    private final EurekaClient                 eurekaClient;
+    private final RestaurantServiceIntegration restaurantServiceIntegration;
+    private final RabbitTemplate               rabbitTemplate;
+    private       AtomicLong                   atomicLong = new AtomicLong();
 
     @PostMapping("/place")
     public PlaceOrderResponse placeOrder(@Valid @RequestBody PlaceOrderRequest orderRequestParam) {
@@ -83,7 +84,7 @@ public class OrderProcessController {
         PackageRequest packageRequestLoc = new PackageRequest();
         packageRequestLoc.setMeals(orderRequestParam.getOrders());
         packageRequestLoc.setOrderId(packageRequestLoc.getOrderId());
-        StartResponse startResponseLoc = restaurantIntegration.start(packageRequestLoc);
+        StartResponse startResponseLoc = restaurantServiceIntegration.start(packageRequestLoc);
         rabbitTemplate.convertAndSend("int-topic-message-exch",
                                       "msg.sms.europe.east.tr.delivery",
                                       NotifyMessage.builder()
